@@ -24,11 +24,9 @@
 @var color link-color      "Link Color"            "#189EF3"
 @var color unfollow-color  "Unfollow Button Color" "#079992"
 
-@var checkbox invert "Invert" 1
+@var checkbox invert-colors "Invert" 1
 ==/UserStyle== */
 
-v(var)
-  var(--{var})
 bg(c)
   background-color c !important
 fg(c)
@@ -77,22 +75,22 @@ else
   --border-color border-color
   --primary-color primary-color
   --secondary-color secondary-color
-  --invert invert(invert)
+  --invert invert(invert-colors)
 
-$ui-font = v('ui-font')
-$ui-font-size = v('ui-font-size')
-$ui-font-stretch = v('ui-font-stretch')
+$ui-font = var(--ui-font)
+$ui-font-size = var(--ui-font-size)
+$ui-font-stretch = var(--ui-font-stretch)
 
-$unfollow-color = v('unfollow-color')
-$link-color = v('link-color')
+$unfollow-color = var(--unfollow-color)
+$link-color = var(--link-color)
 
-$body-bg = v('body-bg')
-$card-bg = v('card-bg')
-$card-bg-2 = v('card-bg-2')
-$border-color = v('border-color')
-$primary-color = v('primary-color')
-$secondary-color v('secondary-color')
-$invert = v('invert')
+$body-bg = var(--body-bg)
+$card-bg = var(--card-bg)
+$card-bg-2 = var(--card-bg-2)
+$border-color = var(--border-color)
+$primary-color = var(--primary-color)
+$secondary-color var(--secondary-color)
+$invert = var(--invert)
 
 /* Mixins */
 $shadow =
