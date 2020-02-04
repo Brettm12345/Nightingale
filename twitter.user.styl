@@ -1,0 +1,431 @@
+/* ==UserStyle==
+@name           Nightingale
+@namespace      https://github.com/Catgrills/Nightingale
+@version        1.0.9
+@description    An user style for Twitter called Nightingale.
+@author         Catgrills/Katgrills
+@preprocessor   stylus
+
+@var text ui-font             "Font"                "Roboto"
+@var text ui-font-stretch     "Font Stretch"        "condensed"
+@var text ui-font-size        "Font Size"           "14pt"
+
+@var text message-line-height "Message Line Height" "20pt"
+
+@var select theme "Theme" ["Default", "Light"]
+
+@var color body-bg   "Body Background"             "#192633"
+@var color card-bg   "Card Background"             "#202C3A"
+@var color card-bg-2 "Alternative Card Background" "#121A23"
+@var color op-bg           "Highlight Background"  "rgba(32, 44, 58, 0.9)"
+@var color border-color    "Border Color"          "#0A0F14"
+@var color primary-color   "Primary Color"         "#FFF"
+@var color secondary-color "Secondary Color"       "#EBEBEB"
+@var color link-color      "Link Color"            "#189EF3"
+@var color unfollow-color  "Unfollow Button Color" "#079992"
+
+@var checkbox invert "Invert" 1
+==/UserStyle== */
+
+v(var)
+  var(--{var})
+bg(c)
+  background-color c !important
+fg(c)
+  color c !important
+bc(c)
+  border-color c !important
+id(val)
+  &[id*=val]
+testid(val)
+  &[data-testid=val]
+labeledby(val)
+  &[aria-labelledby=val]
+live(val)
+  &[aria-live=val]
+role(val)
+  &[role=val]
+style(val)
+  &[style*=val]
+radius(i)
+  border-radius {i}px !important
+zIndex(i)
+  z-index i !important
+link(val)
+  a[href=val]
+
+:root
+--ui-font ui-font
+--ui-font-size ui-font-size
+--ui-font-stretch ui-font-stretch
+
+--link-color link-color
+--unfollow-color unfollow-color
+
+if (theme == "Light")
+  --body-bg "#F0F1F5"
+  --card-bg "#FFF"
+  --card-bg-2 "#F8F8F8"
+  --border-color "#CFD4D8"
+  --primary-color "#333"
+  --secondary-color "#657786"
+  --invert invert(0)
+else
+  --body-bg body-bg
+  --card-bg card-bg
+  --card-bg-2 card-bg-2
+  --border-color border-color
+  --primary-color primary-color
+  --secondary-color secondary-color
+  --invert invert(invert)
+
+$ui-font = v('ui-font')
+$ui-font-size = v('ui-font-size')
+$ui-font-stretch = v('ui-font-stretch')
+
+$unfollow-color = v('unfollow-color')
+$link-color = v('link-color')
+
+$body-bg = v('body-bg')
+$card-bg = v('card-bg')
+$card-bg-2 = v('card-bg-2')
+$border-color = v('border-color')
+$primary-color = v('primary-color')
+$secondary-color v('secondary-color')
+$invert = v('invert')
+
+/* Mixins */
+$shadow =
+  box-shadow 0px 1px 2px rgba(0, 0, 0, .2) !important
+
+$fade =
+  &:hover
+    background transparent !important
+    opacity 0.5
+
+$hide =
+  display none !important
+
+$message-font =
+  font-size $ui-font-size
+  font-stretch $ui-font-stretch
+  line-height $message-line-height
+
+$font =
+  font-size $ui-font-size !important
+  font-stretch $ui-font-stretch !important
+
+$no-border =
+  border none !important
+
+@-moz-document domain("twitter.com")
+  *
+    font-family $ui-font, "ぼくたちのゴシック２ボールド", "BM YEONSUNG" !important
+
+  *::-moz-focus-inner
+    border 0 !important
+
+  input::-moz-placeholder { fg: $primary-color }
+
+  select
+    appearance none
+    text-indent 0px
+    text-overflow ellipsis
+    white-space nowrap
+
+  html, body { bg: $body-bg }
+  body
+    overflow-x hidden
+
+ a[target="_blank"] { fg: $link-color }
+
+  header
+    z-index 0 !important
+    {role('banner')} > div:nth-of-type(1) > div:nth-of-type(1)
+      margin-top 90px !important
+
+  h1[role="heading"]
+    margin-left 2px !important
+    svg
+      fg: $link-color
+      height 28px
+
+  nav svg { fg: $primary-color }
+
+  a
+    $side-nav-tweet-button = testid('SideNav_NewTweet_Button')
+    {$side-nav-tweet-button}
+      bg: $link-color
+      {$shadow}
+      svg
+        height 20px
+
+  div
+    $button = role("button")
+    $tweet-button = testid("tweetButton")
+    $status = role("status")
+    $polite = live("polite")
+    $sidebar-column = testid("sidebarColumn")
+    $typeahdead-dropdown = id("typeaheadDropdown")
+    {$button}
+      border none
+    {$tweet-button}, {$status} {$button} {$shadow}
+    {$tweet-button}, {$tweet-button} div { bg: $link-color }
+
+    {$typeahdead-dropdown}
+      bg: $card-bg-2
+      zIndex: 9
+      {$shadow}
+      *
+      fg: $primary-color
+      {$no-border}
+      {$font}
+
+    {$polite}
+      border none !important
+      font-size 8pt !important
+      height 20px !important
+      width 20px !important
+
+    {$sidebar-column}
+      visibility hidden
+      z-index 999 !important
+      form
+        visibility visible !important
+        position fixed
+        top 0px
+        right 0px !important
+        left 0px !important
+        div
+          bg: $card-bg
+          border none
+          border-radius 1px !important
+          box-shadow none !important
+          {$font}
+        & > div:nth-of-type(1) > div:nth-of-type(1)
+          bg: $card-bg
+          border-radius 0px !important
+          padding-top 2px !important
+          padding-bottom 4px !important
+          padding-left 10px !important
+          {$shadow}
+          *
+          fg: $primary-color
+          {$font}
+
+  a[data-testid="AppTabBar_Home_Link"],
+  a[data-testid="AppTabBar_Explore_Link"],
+  a[href*="ads.twitter.com"],
+  a[href*="analytics.twitter.com"],
+  a[href*="support.twitter.com"]
+    {$hide}
+
+  article
+    img { radius: 2 }
+    &:hover { bg: $card-bg }
+    *
+      fg: $primary-color
+      {$no-border}
+      {$font}
+
+  div
+    {role("alert")}
+      bg: $card-bg
+      border-radius 2px
+      padding-bottom 13px !important
+      {$shadow}
+      *
+        fg: $primary-color
+        {$font}
+    {style("left")} {style("will-change")}
+      div
+        bg: $card-bg-2
+        radius: 3
+
+        {testid("-follow")} div { bg: $link-color }
+        {testid("-unfollow")} div { bg: $unfollow-color }
+        *
+          fg: $primary-color
+          {$font}
+      *
+        box-shadow none
+
+  .PageContainer
+    bg: transparent
+    *
+      border-color $border-color
+      color $primary-color
+      font-size: 14pt;
+      font-stretch: condensed;
+
+  .list-
+    &btn
+      &:first-of-type { bc: $border-color }
+      {$fade}
+    &explanation
+      font-family $ui-font !important
+      font-stretch condensed !important
+      font-weight normal !important
+
+  div[role="alertdialog"] > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2)
+    bg: $card-bg-2
+    border-radius 2px
+    {$shadow}
+    div[role="button"]
+      background $card-bg
+      border 1px solid $border-color
+      padding-bottom 3px
+    *
+      fg: $primary-color
+      {$font}
+
+  /* Notifications */
+
+  div[role="tablist"]
+    &, & * { bg: $card-bg-2 }
+    margin-bottom -4px
+    {$shadow}
+
+  /* Messages */
+  section
+    $master = labeledby("master-header")
+    $detail = labeledby("detail-header")
+    $region = role("region")
+
+    {$region} { bc: $border-color }
+    {$master}, {$detail}
+      bg: $card-bg-2
+      padding 10px !important
+      div { bg: $card-bg-2 }
+      *
+        bc: $border-color
+        fg: $primary-color
+        {$message-font}
+    {$detail} a[role="button"]
+      &, & div { bg: $card-bg }
+    {$master} div[data-testid="conversation"]
+      bg: $card-bg
+      border 1px solid $border-color !important
+      radius: 2
+      div { bg: $card-bg }
+    {$master} div[role="tablist"], div[data-testid="primaryColumn"] > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) div[role="tablist"]
+      box-shadow none !important
+
+  a[role="tab"] { $fade }
+
+
+  div[data-testid="userActions"],
+  div[aria-label*="notif"],
+  a[data-testid="NewDM_Button"] {$no-border}
+
+  /* Modal */
+  div[aria-labelledby="modal-header"]
+    radius: 2
+    {$shadow}
+    div[style*="background-color"] { bg: $card-bg }
+    *
+      border-color $border-color
+      color $primary-color
+      {$font}
+    label
+      background-color $card-bg-2
+      border-bottom 1px solid $border-color
+    .DraftEditor-root
+      radius: 2
+      {$shadow}
+      *
+        bg: $card-bg
+        padding 2px
+
+  div[data-testid="nextButton"]
+    bg: $card-bg
+    border 1px solid $border-color !important
+    div { bg: transparent }
+
+  /* List */
+  {link("/lists/create")}
+    background $card-bg-2
+    border-color $border-color
+
+  /* Profile */
+  a[role="link"] *
+    color $primary-color
+    {$font}
+
+  {link("/settings/profile")}
+    background $card-bg-2
+    border-color $border-color
+    padding-bottom 2px
+
+  div
+    $follow = testid("-follow")
+    $unfollow = testid("-unfollow")
+    {$follow}, {$unfollow}
+      {$shadow}
+      height 40px
+      padding-bottom 3px
+
+    {$folow} {bg: $link-color}
+    {$unfollow} {bg: $unfollow-color}
+
+
+  div[role="presentation"] { bc: $border-color }
+
+  a[href*="related_users"] { $fade }
+
+
+  .QuoteTweet,
+  .btn.btn-default.btn-sm.ep-ViewAllEngagementsButton
+      background: $card-bg-2
+      border: 1px solid $border-color
+
+  .QuoteTweet *,
+  .ep-TweetPerformance.ep-Section *
+      bc: $border-color
+      fg: $primary-color
+      {$message-font}
+
+  /* Moments */
+  section a[href*="moments"]
+    bg: $card-bg
+    radius: 2
+    margin-bottom 10px
+    {$shadow}
+
+
+  /* Search */
+  a[href*="spelling_expansion"] { $font }
+
+@-moz-document regexp("https://twitter.com/home.*")
+  div
+    {testid("tweetButtonInline")}
+      bg: $link-color
+      bc: $border-color
+      padding-bottom 3px
+      * { fg: white }
+    {testid("primaryColumn")} > div:nth-of-type(1) > div:nth-of-type(2)
+      /*** HOME PERSONAL ***/
+      bg: $card-bg-2
+      radius: 2
+      padding 10px 10px 20px 10px !important
+      {$no-border}
+      {$shadow}
+      *
+        color $primary-color
+        {$font}
+    {testid("addButton")} { $no-border }
+    {testid("toolBar")}
+      bg: $card-bg-2
+      margin-left 20px !important
+
+  .public-DraftEditorPlaceholder-root,
+    .DraftEditor-editorContainer
+    margin-left 13px !important
+
+@-moz-document url("https://twitter.com/messages/compose"), url("https://twitter.com/compose/tweet")
+  div[aria-labelledby="modal-header"] div
+      bg: $card-bg-2
+      {$no-border}
+
+
+
